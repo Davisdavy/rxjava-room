@@ -1,0 +1,2 @@
+rootProject.name='Rxandroidroom'
+include ':app'
