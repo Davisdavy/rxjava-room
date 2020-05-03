@@ -9,10 +9,13 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "myApp";
@@ -29,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         myObservable = Observable.just(greetings);
+        myObservable.subscribeOn(Schedulers.io());
+
+        myObservable.observeOn(AndroidSchedulers.mainThread());
 
         myObserver = new Observer<String>() {
             @Override
