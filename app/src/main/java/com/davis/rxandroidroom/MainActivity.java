@@ -16,7 +16,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "myApp";
-    private String greetings = "Hello Rxxjava";
+    private String greetings = "Hello From Rxjava";
     private Observable<String> myObservable;
     private Observer<String> myObserver;
     @BindView(R.id.txtGreeting)
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onComplete() {
-
+                Log.d(TAG, "onComplete: called");
             }
         };
 
