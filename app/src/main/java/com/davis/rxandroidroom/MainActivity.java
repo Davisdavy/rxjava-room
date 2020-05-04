@@ -15,14 +15,15 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "myApp";
     private String greetings = "Hello From Rxjava";
     private Observable<String> myObservable;
-    private Observer<String> myObserver;
-    private Disposable disposable;
+    private DisposableObserver<String> myObserver;
+
     @BindView(R.id.txtGreeting)
     TextView txtGreeting;
     @Override
@@ -37,14 +38,31 @@ public class MainActivity extends AppCompatActivity {
 
         myObservable.observeOn(AndroidSchedulers.mainThread());
 
-        myObserver = new Observer<String>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                Log.d(TAG, "onSubscribe: called");
-
-                disposable=d;
-            }
-
+//        myObserver = new Observer<String>() {
+//            @Override
+//            public void onSubscribe(@NonNull Disposable d) {
+//                Log.d(TAG, "onSubscribe: called");
+//
+//                disposable=d;
+//            }
+//
+//            @Override
+//            public void onNext(@NonNull String s) {
+//                Log.d(TAG, "onNext: called");
+//                txtGreeting.setText(s);
+//            }
+//
+//            @Override
+//            public void onError(@NonNull Throwable e) {
+//                Log.d(TAG, "onError: called");
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                Log.d(TAG, "onComplete: called");
+//            }
+//        };
+        myObserver= new DisposableObserver<String>() {
             @Override
             public void onNext(@NonNull String s) {
                 Log.d(TAG, "onNext: called");
@@ -61,13 +79,12 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onComplete: called");
             }
         };
-
         myObservable.subscribe(myObserver);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        disposable.dispose();
+        myObserver.dispose();
     }
 }
